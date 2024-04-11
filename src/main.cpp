@@ -160,6 +160,39 @@ void all_dmx_off() {
   dmx.update();
 }
 
+void reset_values(){
+  sun_status = 0;
+  solar_status = 0;
+  inverter_status = 0;
+  genset_status = 0;
+  energyup_status = 0;
+  energydown_status = 0;
+  load_status = 0;
+  utility_status = 0;
+
+  sunbox_status = 0;
+  solarbox_status = 0;
+  inverterbox_status = 0;
+  gensetbox_status = 0;
+  totalbox_status = 0;
+  energybox_status = 0;
+  loadbox_status = 0;
+  utilitybox_status = 0;
+}
+
+
+void reset_values_for_strip()
+{
+  current_led_number_1 = 0;
+  current_led_number_2 = 0;
+  current_led_number_3 = 0;
+  current_led_number_4 = 0;
+  current_led_number_5 = 0;
+  current_led_number_6 = 0;
+  current_led_number_7 = 0;
+  current_led_number_8 = 0;
+}
+
 
 void allstripClear() {
   strip_1.clear();
@@ -433,37 +466,103 @@ void clear_all(){
   clear_utility();
 }
 
-void process_data(String btdata) {
+void process_data(String btdata)
+{
 
-  if (DEBUG) {Serial.println(btdata);}
-  if      (btdata == "A1") {        // UTILITY BUTTON ON
+  if (DEBUG){Serial.println(btdata);}
+  // UTILITY BUTTON ON
+  if (btdata == "A1"){
     utility_button_status = 1;
   }
-  else if (btdata == "B1") {        // GENSET BUTTON ON
+  // GENSET BUTTON ON
+  else if (btdata == "B1"){ 
     genset_button_status = 1;
-
   }
-  else if (btdata == "C1") {        // ENERGY BUTTON ON
+  // ENERGY BUTTON ON
+  else if (btdata == "C1"){
     energy_button_status = 1;
   }
-  else if (btdata == "D1") {        // SUN BUTTON ON
+  // SUN BUTTON ON
+  else if (btdata == "D1"){
     sun_button_status = 1;
   }
-  else if (btdata == "A2") {        // UTILITY BUTTON OFF
+  // UTILITY BUTTON OFF
+  else if (btdata == "A2"){
+    utility_button_status = 0;
+    utility_status = 0;
+    utilitybox_status = 0;
+    strip_8.clear(); strip_8.show();
+    current_led_number_8 = 0;
+    dmx.write(UTILITYBOX, 0); dmx.update();
+
+    if (energy_button_status==1 && sun_button_status==0){ energyup_status=0; current_led_number_5 = 0; strip_5.clear(); strip_5.show(); }
+    if (genset_button_status==0 && energy_button_status==0){ sun_button_status==0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+
   }
-  else if (btdata == "B2") {        // GENSET BUTTON OFF
+  // GENSET BUTTON OFF
+  else if (btdata == "B2"){
+    genset_button_status = 0;
+    genset_status = 0;
+    gensetbox_status = 0;
+    strip_4.clear(); strip_4.show();
+    current_led_number_4 = 0;
+    dmx.write(GENSETBOX, 0); dmx.update();
+
+    if (energy_button_status==1 && sun_button_status==0){ energyup_status=0; current_led_number_5 = 0; strip_5.clear(); strip_5.show(); }
+    if (utility_button_status==0 && energy_button_status==0){ sun_button_status==0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
   }
-  else if (btdata == "C2") {        // ENERGY BUTTON OFF
+  // ENERGY BUTTON OFF
+  else if (btdata == "C2"){ 
+    energy_button_status = 0;
+    energydown_status = 0;
+    strip_6.clear(); strip_6.show();
+    current_led_number_6 = 0;
+
+    if (utility_button_status==1 || genset_button_status==1){ return;}
+    if (sun_button_status==0 && genset_button_status==0){ sun_button_status=0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+
   }
-  else if (btdata == "D2") {        // SUN BUTTON OFF
+  // SUN BUTTON OFF
+  else if (btdata == "D2"){ 
+    sun_button_status = 0;
+    sun_status = 0;
+    solar_status = 0;
+    inverter_status = 0;
+    sunbox_status = 0;
+    solarbox_status = 0;
+    inverterbox_status = 0;
+
+    current_led_number_1 = 0;
+    current_led_number_2 = 0;
+    current_led_number_3 = 0;
+
+    strip_1.clear(); strip_1.show();
+    strip_2.clear(); strip_2.show();
+    strip_3.clear(); strip_3.show();    
+
+    dmx.write(SUNBOX, 0); 
+    dmx.write(SOLARBOX, 0);
+    dmx.write(INVERTERBOX, 0);
+    dmx.update();
+
+
+    if (utility_button_status==1 || genset_button_status==1){ return;}
+    if (energy_button_status==1){ energyup_status=0; current_led_number_5 = 0; strip_5.clear(); strip_5.show(); }
+    if (energy_button_status==0 && genset_button_status==0 && utility_button_status==0){  allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+
   }
-  else if (btdata == "Z") {        // ALL BUTTON OFF
-  
+  // ALL BUTTON OFF
+  else if (btdata == "Z"){ 
+    sun_button_status = 0;
+    genset_button_status = 0;
+    utility_button_status = 0;
+    energy_button_status = 0;
+    allstripClear();
+    all_dmx_off();
+    reset_values();
+    reset_values_for_strip();
   }
 }
-
-
-
 
 void updateBrightness(uint16_t brightness) {
    if (sun_button_status == 1) {

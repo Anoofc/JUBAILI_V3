@@ -420,6 +420,17 @@ void clear_utility(){
   }
 }
 
+void clear_strips(){
+  clear_sun();
+  clear_solar();
+  clear_inverter();
+  clear_genset();
+  clear_energyup();
+  clear_energydown();
+  clear_load();
+  clear_utility();
+}
+
 void sunRunning (){
   if (sun_button_status == 1 ){
     if (sunbox_status==0){dmx.write(SUNBOX, 1); dmx.update(); sunbox_status = 1; sun_status = 1;}
@@ -611,7 +622,7 @@ void setup() {
 
 void loop() {
   read_bt_data();
-  
+  clear_strips();
   sunRunning();
   gensetRunning();
   utilityRunning();

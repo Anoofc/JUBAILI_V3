@@ -611,5 +611,9 @@ void setup() {
 
 void loop() {
   read_bt_data();
-
+  
+  sunRunning();
+  gensetRunning();
+  utilityRunning();
+  energyRunning();
 }

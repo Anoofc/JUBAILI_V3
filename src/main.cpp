@@ -33,6 +33,8 @@
 #define BLUE  0,0,255
 #define WARM  255,70,0
 
+#define CLEAR_TIME 10000
+
 #define BRIGHTNESS 255
 
 #define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_1_IN_us 90000
@@ -68,6 +70,15 @@ uint32_t last_updated_time_for_strip_6 = 0;
 uint32_t last_updated_time_for_strip_7 = 0;
 uint32_t last_updated_time_for_strip_8 = 0;
 
+uint32_t strip_1_clear_time = 0;
+uint32_t strip_2_clear_time = 0;
+uint32_t strip_3_clear_time = 0;
+uint32_t strip_4_clear_time = 0;
+uint32_t strip_5_clear_time = 0;
+uint32_t strip_6_clear_time = 0;
+uint32_t strip_7_clear_time = 0;
+uint32_t strip_8_clear_time = 0;
+
 uint32_t brightness = 255;
 
 BluetoothSerial SerialBT;
@@ -84,7 +95,7 @@ Adafruit_NeoPixel strip_8(LED_COUNT_8, LED_PIN_8, NEO_GRB + NEO_KHZ800);
 
 
 void setmaxbrightness() {
-//  brightness = BRIGHTNESS;
+  //  brightness = BRIGHTNESS;
   strip_1.setBrightness(BRIGHTNESS);
   strip_2.setBrightness(BRIGHTNESS);
   strip_3.setBrightness(BRIGHTNESS);
@@ -142,15 +153,204 @@ void allstripClear() {
   strip_8.show();
 }
 
-void sun_run_led(uint8_t r, uint8_t g, uint8_t b)
+
+void sun_led(uint8_t r, uint8_t g, uint8_t b)
 {
   if (micros() - last_updated_time_for_strip_1 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_1_IN_us) {
     return;
   }
-  
+  if (current_led_number_1<LED_COUNT_1){
+    strip_1.setPixelColor(current_led_number_1,strip_1.Color(r,g,b));
+    strip_1.show();
+    Serial.println(current_led_number_1);
+    current_led_number_1++;
+    strip_1_clear_time = millis();
+  } 
+  last_updated_time_for_strip_1 = micros();
+}
+void solar_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_2 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_2_IN_us) {
+    return;
+  }
+  if (current_led_number_2<LED_COUNT_2){
+    strip_2.setPixelColor(current_led_number_2,strip_2.Color(r,g,b));
+    strip_2.show();
+    Serial.println(current_led_number_2);
+    current_led_number_2++;
+    strip_2_clear_time = millis();
+  } 
+  last_updated_time_for_strip_2 = micros();
 }
 
+void inverter_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_3 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_3_IN_us) {
+    return;
+  }
+  if (current_led_number_3<LED_COUNT_3){
+    strip_3.setPixelColor(current_led_number_3,strip_3.Color(r,g,b));
+    strip_3.show();
+    Serial.println(current_led_number_3);
+    current_led_number_3++;
+    strip_3_clear_time = millis();
+  } 
+  last_updated_time_for_strip_3 = micros();
+}
 
+void genset_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_4 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_4_IN_us) {
+    return;
+  }
+  if (current_led_number_4<LED_COUNT_4){
+    strip_4.setPixelColor(current_led_number_4,strip_4.Color(r,g,b));
+    strip_4.show();
+    Serial.println(current_led_number_4);
+    current_led_number_4++;
+    strip_4_clear_time = millis();
+  } 
+  last_updated_time_for_strip_4 = micros();
+}
+
+void energyup_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_5 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_5_IN_us) {
+    return;
+  }
+  if (current_led_number_5<LED_COUNT_5){
+    strip_5.setPixelColor(current_led_number_5,strip_5.Color(r,g,b));
+    strip_5.show();
+    Serial.println(current_led_number_5);
+    current_led_number_5++;
+    strip_5_clear_time = millis();
+  } 
+  last_updated_time_for_strip_5 = micros();
+}
+
+void energydown_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_6 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_6_IN_us) {
+    return;
+  }
+  if (current_led_number_6<LED_COUNT_6){
+    strip_6.setPixelColor(current_led_number_6,strip_6.Color(r,g,b));
+    strip_6.show();
+    Serial.println(current_led_number_6);
+    current_led_number_6++;
+    strip_6_clear_time = millis();
+  } 
+  last_updated_time_for_strip_6 = micros();
+}
+
+void load_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_7 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_7_IN_us) {
+    return;
+  }
+  if (current_led_number_7<LED_COUNT_7){
+    strip_7.setPixelColor(current_led_number_7,strip_7.Color(r,g,b));
+    strip_7.show();
+    Serial.println(current_led_number_7);
+    current_led_number_7++;
+    strip_7_clear_time = millis();
+  } 
+  last_updated_time_for_strip_7 = micros();
+}
+
+void utility_led(uint8_t r, uint8_t g, uint8_t b)
+{
+  if (micros() - last_updated_time_for_strip_8 < TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_8_IN_us) {
+    return;
+  }
+  if (current_led_number_8<LED_COUNT_8){
+    strip_8.setPixelColor(current_led_number_8,strip_8.Color(r,g,b));
+    strip_8.show();
+    Serial.println(current_led_number_8);
+    current_led_number_8++;
+    strip_8_clear_time = millis();
+  } 
+  last_updated_time_for_strip_8 = micros();
+}
+
+void clear_sun(){
+  if (millis() - strip_1_clear_time > CLEAR_TIME) {
+    current_led_number_1 = 0;
+    strip_1.clear();
+    strip_1.show();
+    if (DEBUG){ Serial.println("Strip 1 Cleared!"); }
+    strip_1_clear_time = millis();
+  }
+}
+void clear_solar(){
+  if (millis() - strip_2_clear_time > CLEAR_TIME) {
+    current_led_number_2 = 0;
+    strip_2.clear();
+    strip_2.show();
+    if (DEBUG){ Serial.println("Strip 2 Cleared!"); }
+    strip_2_clear_time = millis();
+  }
+}
+
+void clear_inverter(){
+  if (millis() - strip_3_clear_time > CLEAR_TIME) {
+    current_led_number_3 = 0;
+    strip_3.clear();
+    strip_3.show();
+    if (DEBUG){ Serial.println("Strip 3 Cleared!"); }
+    strip_3_clear_time = millis();
+  }
+}
+
+void clear_genset(){
+  if (millis() - strip_4_clear_time > CLEAR_TIME) {
+    current_led_number_4 = 0;
+    strip_4.clear();
+    strip_4.show();
+    if (DEBUG){ Serial.println("Strip 4 Cleared!"); }
+    strip_4_clear_time = millis();
+  }
+}
+
+void clear_energyup(){
+  if (millis() - strip_5_clear_time > CLEAR_TIME) {
+    current_led_number_5 = 0;
+    strip_5.clear();
+    strip_5.show();
+    if (DEBUG){ Serial.println("Strip 5 Cleared!"); }
+    strip_5_clear_time = millis();
+  }
+}
+
+void clear_energydown(){
+  if (millis() - strip_6_clear_time > CLEAR_TIME) {
+    current_led_number_6 = 0;
+    strip_6.clear();
+    strip_6.show();
+    if (DEBUG){ Serial.println("Strip 6 Cleared!"); }
+    strip_6_clear_time = millis();
+  }
+}
+
+void clear_load(){
+  if (millis() - strip_7_clear_time > CLEAR_TIME) {
+    current_led_number_7 = 0;
+    strip_7.clear();
+    strip_7.show();
+    if (DEBUG){ Serial.println("Strip 7 Cleared!"); }
+    strip_7_clear_time = millis();
+  }
+}
+
+void clear_utility(){
+  if (millis() - strip_8_clear_time > CLEAR_TIME) {
+    current_led_number_8 = 0;
+    strip_8.clear();
+    strip_8.show();
+    if (DEBUG){ Serial.println("Strip 8 Cleared!"); }
+    strip_8_clear_time = millis();
+  }
+}
 
 void process_data(String btdata) {
 

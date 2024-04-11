@@ -44,6 +44,12 @@
 #define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_7_IN_us 90000
 #define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_8_IN_us 90000
 
+#include <Arduino.h>
+#include <cstdint>
+#include "SparkFunDMX.h"
+#include <Adafruit_NeoPixel.h>
+#include "BluetoothSerial.h"
+
 uint32_t current_led_number_1 = 0;
 uint32_t current_led_number_2 = 0;
 uint32_t current_led_number_3 = 0;
@@ -62,15 +68,7 @@ uint32_t last_updated_time_for_strip_6 = 0;
 uint32_t last_updated_time_for_strip_7 = 0;
 uint32_t last_updated_time_for_strip_8 = 0;
 
-
-
 uint32_t brightness = 255;
-
-#include <Arduino.h>
-#include <cstdint>
-#include "SparkFunDMX.h"
-#include <Adafruit_NeoPixel.h>
-#include "BluetoothSerial.h"
 
 BluetoothSerial SerialBT;
 SparkFunDMX dmx;

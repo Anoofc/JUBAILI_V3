@@ -15,7 +15,7 @@
 #define LED_COUNT_1 21    
 #define LED_COUNT_2 20
 #define LED_COUNT_3 40
-#define LED_COUNT_4 34
+#define LED_COUNT_4 30
 #define LED_COUNT_5 43
 #define LED_COUNT_6 65
 #define LED_COUNT_7 56
@@ -40,14 +40,14 @@
 
 #define BRIGHTNESS 255
 
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_1_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_2_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_3_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_4_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_5_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_6_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_7_IN_us 90000
-#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_8_IN_us 90000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_1_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_2_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_3_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_4_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_5_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_6_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_7_IN_us 50000
+#define TIME_DELAY_FOR_RUNNING_SPEED_FOR_STRIP_8_IN_us 50000
 
 #include <Arduino.h>
 #include <cstdint>
@@ -225,7 +225,7 @@ void sun_led(uint8_t r, uint8_t g, uint8_t b)
     strip_1.show();
     if (DEBUG){ Serial.println("LED 1 COUNT: " + String (current_led_number_1)); }
     current_led_number_1++;
-    if (current_led_number_1 == LED_COUNT_1 && solarbox_status == 0 ) {dmx.write(SOLARBOX, 1); dmx.update(); solarbox_status = 1; solar_status=1;}
+    if (current_led_number_1 == LED_COUNT_1 && solarbox_status == 0 ) {dmx.write(SOLARBOX, BRIGHTNESS); dmx.update(); solarbox_status = 1; solar_status=1;}
     strip_1_clear_time = millis();
   } 
   last_updated_time_for_strip_1 = micros();
@@ -240,7 +240,7 @@ void solar_led(uint8_t r, uint8_t g, uint8_t b)
     strip_2.show();
     if (DEBUG){ Serial.println("LED 2 COUNT: " + String (current_led_number_2)); }
     current_led_number_2++;
-    if (current_led_number_2 == LED_COUNT_2 && inverterbox_status == 0 ) {dmx.write(INVERTERBOX, 1); dmx.update(); inverterbox_status = 1; inverter_status=1;}
+    if (current_led_number_2 == LED_COUNT_2 && inverterbox_status == 0 ) {dmx.write(INVERTERBOX, BRIGHTNESS); dmx.update(); inverterbox_status = 1; inverter_status=1;}
     strip_2_clear_time = millis();
   } 
   last_updated_time_for_strip_2 = micros();
@@ -256,6 +256,7 @@ void inverter_led(uint8_t r, uint8_t g, uint8_t b)
     strip_3.show();
     if (DEBUG){ Serial.println("LED 3 COUNT: " + String (current_led_number_3)); }
     current_led_number_3++;
+    if (current_led_number_3 == LED_COUNT_3 ) {energyup_status=1;}
     strip_3_clear_time = millis();
   } 
   last_updated_time_for_strip_3 = micros();
@@ -271,7 +272,7 @@ void genset_led(uint8_t r, uint8_t g, uint8_t b)
     strip_4.show();
     if (DEBUG){ Serial.println("LED 4 COUNT: " + String (current_led_number_4)); }
     current_led_number_4++;
-    if (current_led_number_4 == LED_COUNT_4 && totalbox_status == 0 ) {dmx.write(TOTALBOX, 1); dmx.update(); totalbox_status = 1; load_status = 1; energyup_status = 1;}
+    if (current_led_number_4 == LED_COUNT_4 && totalbox_status == 0 ) {dmx.write(TOTALBOX, BRIGHTNESS); dmx.update(); totalbox_status = 1; load_status = 1; energyup_status = 1;}
     strip_4_clear_time = millis();
   } 
   last_updated_time_for_strip_4 = micros();
@@ -287,7 +288,7 @@ void energyup_led(uint8_t r, uint8_t g, uint8_t b)
     strip_5.show();
     if (DEBUG){ Serial.println("LED 5 COUNT: " + String (current_led_number_5)); }
     current_led_number_5++;
-    if (current_led_number_5 == LED_COUNT_5 && energybox_status == 0 ) {dmx.write(ENERGYBOX, 1); dmx.update(); energybox_status = 1; }
+    if (current_led_number_5 == LED_COUNT_5 && energybox_status == 0 ) {dmx.write(ENERGYBOX, BRIGHTNESS); dmx.update(); energybox_status = 1; }
     strip_5_clear_time = millis();
   } 
   last_updated_time_for_strip_5 = micros();
@@ -303,7 +304,7 @@ void energydown_led(uint8_t r, uint8_t g, uint8_t b)
     strip_6.show();
     if (DEBUG){ Serial.println("LED 6 COUNT: " + String (current_led_number_6)); }
     current_led_number_6++;
-    if (current_led_number_6 == LED_COUNT_6 && loadbox_status == 0 ) {dmx.write(LOADBOX, 1); dmx.update(); loadbox_status = 1; load_status = 1;}
+    if (current_led_number_6 == LED_COUNT_6 && totalbox_status == 0 ) {dmx.write(TOTALBOX, BRIGHTNESS); dmx.update(); totalbox_status = 1; load_status = 1;}
     strip_6_clear_time = millis();
   } 
   last_updated_time_for_strip_6 = micros();
@@ -319,7 +320,7 @@ void load_led(uint8_t r, uint8_t g, uint8_t b)
     strip_7.show();
     if (DEBUG){ Serial.println("LED 7 COUNT: " + String (current_led_number_7)); }
     current_led_number_7++;
-    if (current_led_number_7 == LED_COUNT_7 && loadbox_status == 0 ) {dmx.write(LOADBOX, 1); dmx.update(); loadbox_status = 1; }
+    if (current_led_number_7 == LED_COUNT_7 && loadbox_status == 0 ) {dmx.write(LOADBOX, BRIGHTNESS); dmx.update(); loadbox_status = 1; }
     strip_7_clear_time = millis();
   } 
   last_updated_time_for_strip_7 = micros();
@@ -335,7 +336,7 @@ void utility_led(uint8_t r, uint8_t g, uint8_t b)
     strip_8.show();
     if (DEBUG){ Serial.println("LED 8 COUNT: " + String (current_led_number_8)); }
     current_led_number_8++;
-    if (current_led_number_8 == LED_COUNT_8 && totalbox_status == 0 ) {dmx.write(TOTALBOX, 1); dmx.update(); totalbox_status = 1; load_status = 1; energyup_status = 1;}
+    if (current_led_number_8 == LED_COUNT_8 && totalbox_status == 0 ) {dmx.write(TOTALBOX, BRIGHTNESS); dmx.update(); totalbox_status = 1; load_status = 1; energyup_status = 1;}
     strip_8_clear_time = millis();
   } 
   last_updated_time_for_strip_8 = micros();
@@ -433,16 +434,17 @@ void clear_strips(){
 
 void sunRunning (){
   if (sun_button_status == 1 ){
-    if (sunbox_status==0){dmx.write(SUNBOX, 1); dmx.update(); sunbox_status = 1; sun_status = 1;}
+    if (sunbox_status==0){dmx.write(SUNBOX, BRIGHTNESS); dmx.update(); sunbox_status = 1; sun_status = 1;}
     if (sun_status==1){sun_led(WARM);}
     if (solar_status){solar_led(BLUE);}
     if (inverter_status){inverter_led(BLUE);}
+    if (energyup_status==1){energyup_led(GREEN);}
   }
 }
 
 void gensetRunning (){
   if (genset_button_status == 1 ){
-    if (gensetbox_status==0){dmx.write(GENSETBOX, 1); dmx.update(); gensetbox_status = 1; genset_status = 1;}
+    if (gensetbox_status==0){dmx.write(GENSETBOX, BRIGHTNESS); dmx.update(); gensetbox_status = 1; genset_status = 1;}
     if (genset_status==1){genset_led(BLUE);}
     if (load_status==1){load_led(BLUE);}
     if (energyup_status==1){energyup_led(GREEN);}
@@ -451,7 +453,7 @@ void gensetRunning (){
 
 void utilityRunning (){
   if (utility_button_status == 1 ){
-    if (utilitybox_status==0){dmx.write(UTILITYBOX, 1); dmx.update(); utilitybox_status = 1; utility_status = 1;}
+    if (utilitybox_status==0){dmx.write(UTILITYBOX, BRIGHTNESS); dmx.update(); utilitybox_status = 1; utility_status = 1;}
     if (utility_status==1){utility_led(BLUE);}
     if (load_status==1){load_led(BLUE);}
     if (energyup_status==1){energyup_led(GREEN);}
@@ -460,7 +462,8 @@ void utilityRunning (){
 
 void energyRunning (){
   if (energy_button_status == 1 ){
-    if (energybox_status==0){dmx.write(ENERGYBOX, 1); dmx.update(); energybox_status = 1; energydown_status = 1;}
+    if (energybox_status==0){dmx.write(ENERGYBOX, BRIGHTNESS); dmx.update(); energybox_status = 1; energydown_status = 1;}
+    else if (energybox_status==1){energydown_status = 1;}
     if (energydown_status==1){energydown_led(RED);}
     if (load_status==1){load_led(BLUE);}
   }
@@ -495,7 +498,7 @@ void process_data(String btdata)
   }
   // SUN BUTTON ON
   else if (btdata == "D1"){
-    sun_button_status = 1;
+    if (energy_button_status==1 || genset_button_status==1 || utility_button_status==1) {sun_button_status = 1;}
   }
   // UTILITY BUTTON OFF
   else if (btdata == "A2"){
@@ -507,7 +510,7 @@ void process_data(String btdata)
     dmx.write(UTILITYBOX, 0); dmx.update();
 
     if (energy_button_status==1 && sun_button_status==0){ energyup_status=0; current_led_number_5 = 0; strip_5.clear(); strip_5.show(); }
-    if (genset_button_status==0 && energy_button_status==0){ sun_button_status==0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+    if (genset_button_status==0 && energy_button_status==0){ sun_button_status=0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
 
   }
   // GENSET BUTTON OFF
@@ -520,7 +523,7 @@ void process_data(String btdata)
     dmx.write(GENSETBOX, 0); dmx.update();
 
     if (energy_button_status==1 && sun_button_status==0){ energyup_status=0; current_led_number_5 = 0; strip_5.clear(); strip_5.show(); }
-    if (utility_button_status==0 && energy_button_status==0){ sun_button_status==0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+    if (utility_button_status==0 && energy_button_status==0){ sun_button_status=0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
   }
   // ENERGY BUTTON OFF
   else if (btdata == "C2"){ 
@@ -578,6 +581,7 @@ void process_data(String btdata)
 void updateBrightness(uint16_t brightness) {
    if (sun_button_status == 1) {
     strip_1.setBrightness(brightness);
+    strip_1.show();
     dmx.write(SUNBOX, brightness);
     dmx.update();
    }

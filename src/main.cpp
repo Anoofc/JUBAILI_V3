@@ -36,7 +36,7 @@
 #define BLUE  0,0,255
 #define WARM  255,70,0
 
-#define CLEAR_TIME 10000
+#define CLEAR_TIME 5000
 
 #define BRIGHTNESS 255
 
@@ -226,6 +226,7 @@ void sun_led(uint8_t r, uint8_t g, uint8_t b)
     if (DEBUG){ Serial.println("LED 1 COUNT: " + String (current_led_number_1)); }
     current_led_number_1++;
     if (current_led_number_1 == LED_COUNT_1 && solarbox_status == 0 ) {dmx.write(SOLARBOX, BRIGHTNESS); dmx.update(); solarbox_status = 1; solar_status=1;}
+    if (current_led_number_1 == LED_COUNT_1 && solarbox_status == 1 ){solar_status = 1;}
     strip_1_clear_time = millis();
   } 
   last_updated_time_for_strip_1 = micros();
@@ -241,6 +242,7 @@ void solar_led(uint8_t r, uint8_t g, uint8_t b)
     if (DEBUG){ Serial.println("LED 2 COUNT: " + String (current_led_number_2)); }
     current_led_number_2++;
     if (current_led_number_2 == LED_COUNT_2 && inverterbox_status == 0 ) {dmx.write(INVERTERBOX, BRIGHTNESS); dmx.update(); inverterbox_status = 1; inverter_status=1;}
+    if (current_led_number_2== LED_COUNT_2 && inverterbox_status == 1 ) {inverter_status=1;}
     strip_2_clear_time = millis();
   } 
   last_updated_time_for_strip_2 = micros();
@@ -344,25 +346,18 @@ void utility_led(uint8_t r, uint8_t g, uint8_t b)
 
 void clear_sun(){
   if (millis() - strip_1_clear_time > CLEAR_TIME) {
+    solar_status = 0;
+    inverter_status = 0;
     current_led_number_1 = 0;
     strip_1.clear();
     strip_1.show();
     if (DEBUG){ Serial.println("Strip 1 Cleared!"); }
     strip_1_clear_time = millis();
-  }
-}
-void clear_solar(){
-  if (millis() - strip_2_clear_time > CLEAR_TIME) {
     current_led_number_2 = 0;
     strip_2.clear();
     strip_2.show();
     if (DEBUG){ Serial.println("Strip 2 Cleared!"); }
     strip_2_clear_time = millis();
-  }
-}
-
-void clear_inverter(){
-  if (millis() - strip_3_clear_time > CLEAR_TIME) {
     current_led_number_3 = 0;
     strip_3.clear();
     strip_3.show();
@@ -370,6 +365,26 @@ void clear_inverter(){
     strip_3_clear_time = millis();
   }
 }
+
+// void clear_solar(){
+//   if (millis() - strip_2_clear_time > CLEAR_TIME) {
+//     current_led_number_2 = 0;
+//     strip_2.clear();
+//     strip_2.show();
+//     if (DEBUG){ Serial.println("Strip 2 Cleared!"); }
+//     strip_2_clear_time = millis();
+//   }
+// }
+
+// void clear_inverter(){
+//   if (millis() - strip_3_clear_time > CLEAR_TIME) {
+//     current_led_number_3 = 0;
+//     strip_3.clear();
+//     strip_3.show();
+//     if (DEBUG){ Serial.println("Strip 3 Cleared!"); }
+//     strip_3_clear_time = millis();
+//   }
+// }
 
 void clear_genset(){
   if (millis() - strip_4_clear_time > CLEAR_TIME) {
@@ -381,15 +396,15 @@ void clear_genset(){
   }
 }
 
-void clear_energyup(){
-  if (millis() - strip_5_clear_time > CLEAR_TIME) {
-    current_led_number_5 = 0;
-    strip_5.clear();
-    strip_5.show();
-    if (DEBUG){ Serial.println("Strip 5 Cleared!"); }
-    strip_5_clear_time = millis();
-  }
-}
+// void clear_energyup(){
+//   if (millis() - strip_5_clear_time > CLEAR_TIME) {
+//     current_led_number_5 = 0;
+//     strip_5.clear();
+//     strip_5.show();
+//     if (DEBUG){ Serial.println("Strip 5 Cleared!"); }
+//     strip_5_clear_time = millis();
+//   }
+// }
 
 void clear_energydown(){
   if (millis() - strip_6_clear_time > CLEAR_TIME) {
@@ -408,6 +423,11 @@ void clear_load(){
     strip_7.show();
     if (DEBUG){ Serial.println("Strip 7 Cleared!"); }
     strip_7_clear_time = millis();
+    current_led_number_5 = 0;
+    strip_5.clear();
+    strip_5.show();
+    if (DEBUG){ Serial.println("Strip 5 Cleared!"); }
+    strip_5_clear_time = millis();
   }
 }
 
@@ -423,10 +443,10 @@ void clear_utility(){
 
 void clear_strips(){
   clear_sun();
-  clear_solar();
-  clear_inverter();
+  // clear_solar();
+  // clear_inverter();
   clear_genset();
-  clear_energyup();
+  // clear_energyup();
   clear_energydown();
   clear_load();
   clear_utility();
@@ -471,10 +491,10 @@ void energyRunning (){
 
 void clear_all(){
   clear_sun();
-  clear_solar();
-  clear_inverter();
+  // clear_solar();
+  // clear_inverter();
   clear_genset();
-  clear_energyup();
+  // clear_energyup();
   clear_energydown();
   clear_load();
   clear_utility();
@@ -533,7 +553,7 @@ void process_data(String btdata)
     current_led_number_6 = 0;
 
     if (utility_button_status==1 || genset_button_status==1){ return;}
-    if (sun_button_status==0 && genset_button_status==0){ sun_button_status=0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
+    if (utility_button_status==0 && genset_button_status==0){ sun_button_status=0; allstripClear(); all_dmx_off(); reset_values(); reset_values_for_strip();}
 
   }
   // SUN BUTTON OFF
